@@ -45,6 +45,18 @@ buildscript {
 allprojects {
     group = "dev.kuml"
     version = "0.54.1"
+
+    // koog's agents-features-opentelemetry-jvm pulls in opentelemetry-bom
+    // 1.61.0, which forces opentelemetry-api/-sdk to 1.61.0 (CVE-flagged)
+    // regardless of what else is on the classpath. Force the patched release.
+    configurations.all {
+        resolutionStrategy {
+            force(
+                "io.opentelemetry:opentelemetry-api:1.62.0",
+                "io.opentelemetry:opentelemetry-sdk:1.62.0",
+            )
+        }
+    }
 }
 
 // Kotlin modules that provably cannot be covered by the RequireNamedArguments
